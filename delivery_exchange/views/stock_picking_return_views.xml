@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_stock_return_picking_form_inherit_delivery_exchange" model="ir.ui.view">
+        <field name="name">Exchange lines</field>
+        <field name="model">stock.return.picking</field>
+        <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_return_moves']/tree/field[@name]" position="attributes">
+                <field name="to_refund" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_return_moves']/tree" position="inside">
+                <field name="exchange_product_id" options="{'no_create': True, 'no_open': True}" force_save="1"
+                       required="1"/>
+                <field name="exchange_quantity" required="1"/>
+            </xpath>
+            <xpath expr="//group[2]" position="after">
+                <group string="New Products">
+                    <field name="delivery_exchange_line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="product_id" options="{'no_create': True, 'no_open': True}" force_save="1"/>
+                            <field name="quantity"/>
+                            <field name="uom_id" readonly="1" groups="uom.group_uom"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+            <xpath expr="//footer/button[@name='create_returns']" position="attributes">
+                <attribute name="string">Exchange</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <act_window name="Delivery Exchange" id="act_stock_delivery_exchange_picking"
+                res_model="stock.return.picking" view_id="view_stock_return_picking_form_inherit_delivery_exchange"
+                view_mode="form" target="new"/>
+
+    <record id="stock.act_stock_return_picking" model="ir.actions.act_window">
+        <field name="view_id" ref="stock.view_stock_return_picking_form"/>
+    </record>
+
+</odoo>

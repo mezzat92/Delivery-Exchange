@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_stock_picking_form_inherit_delivery_exchange" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.delivery.exchange</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="after">
+                <button name="%(act_stock_delivery_exchange_picking)d" string="Delivery Exchange"
+                        attrs="{'invisible': ['|', ('state', '!=', 'done'), ('is_locked', '=', False)]}" type="action"
+                        groups="base.group_user" context="{'delivery_exchange': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
